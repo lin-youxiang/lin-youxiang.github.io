@@ -18,12 +18,12 @@
       
       |
     
-     🌊
+     🍊
   </title>
 
   
-    <link rel="apple-touch-icon" href="/images/favicon.png">
-    <link rel="icon" href="/images/favicon.png">
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
   
 
   <!-- Raleway-Font -->
@@ -33,10 +33,6 @@
   <link rel="stylesheet" href="/css/main.css" />
   <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
   <!-- 代码块风格 -->
-  
-    
-<link rel="stylesheet" href="/css/figcaption/mac-block.css">
-
   
 
   <!-- jquery3.3.1 -->
@@ -88,10 +84,6 @@
       
         <li class="nav-item" data-path="/archives/">
           <a href="/archives/">Archives</a>
-        </li>
-      
-        <li class="nav-item" data-path="/categories/">
-          <a href="/categories/">Categories</a>
         </li>
       
         <li class="nav-item" data-path="/tags/">
@@ -168,17 +160,6 @@
           2022-11-03 00:50:25
         </span>
         
-              <span class="post-categories">
-                <i class="iconfont icon-bookmark" title="分类"></i>
-                
-                <span class="span--category">
-                  <a href="/categories/%E9%A2%98%E8%A7%A3/" title="题解">
-                    <b>#</b> 题解
-                  </a>
-                </span>
-                
-              </span>
-          
       </div>
       <div class="markdown-body">
         <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxRepeating</span><span class="params">(String sequence, String word)</span> &#123;</span><br><span class="line">        <span class="type">char</span>[] sequenceChars = sequence.toCharArray();</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        sb.append(word);</span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="comment">// 含有字串</span></span><br><span class="line">            <span class="keyword">if</span>(sequence.contains(sb.toString())) &#123;</span><br><span class="line">                <span class="comment">// 重复一遍 word</span></span><br><span class="line">                sb.append(word);</span><br><span class="line">                res++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -201,17 +182,6 @@
               2022-11-03 00:50:25
             </span>
             
-                  <span class="post-categories">
-                    <i class="iconfont icon-bookmark" title="分类"></i>
-                    
-                    <span class="span--category">
-                      <a href="/categories/%E9%A2%98%E8%A7%A3/" title="题解">
-                        <b>#</b> 题解
-                      </a>
-                    </span>
-                    
-                  </span>
-              
           </div>
           <div class="post-foot-prev">
             
@@ -233,29 +203,6 @@
 
 
 
-
-
-  <div id="gitalk-container"></div>
-
-  <script>
-    function loadGitalkSuc() {
-      const gitalk = new Gitalk({
-        clientID: 'Ov23li7MNA69cqZdXsXy',
-        clientSecret: '890f68898c10ff0370044d061abe3ed94e2e9e96',
-        repo: 'kudoryafuka3.github.io',
-        owner: 'Kudoryafuka3',
-        admin: ['Kudoryafuka3'],
-        id: location.pathname,
-        distractionFreeMode: false
-      })
-
-      gitalk.render('gitalk-container')
-    }
-  </script>
-  
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
-  
 
 
 
@@ -283,7 +230,7 @@
     
     <div class="footer-more">
       
-        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Oranges</a>
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2025 Oranges</a>
         
     </div>
   
