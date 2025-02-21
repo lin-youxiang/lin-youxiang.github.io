@@ -157,7 +157,7 @@
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-          2025-02-22 01:42:41
+          2025-02-22 01:43:01
         </span>
         
               <span class="post-categories">
@@ -212,8 +212,8 @@
 <li><p>部署 HA</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  --name homeassistant \</span><br><span class="line">  --privileged \</span><br><span class="line">  --restart=unless-stopped \</span><br><span class="line">  -e TZ=MY_TIME_ZONE \</span><br><span class="line">  -v /PATH_TO_YOUR_CONFIG:/config \</span><br><span class="line">  -v /run/dbus:/run/dbus:ro \</span><br><span class="line">  --network=host \</span><br><span class="line">  ghcr.io/home-assistant/home-assistant:stable</span><br></pre></td></tr></table></figure>
 
-<p><strong>修改</strong>：<code>/PATH_TO_YOUR_CONFIG</code></p>
-<p>群晖则在<code>存储空间设置</code>，这里我自定的目录为 <code>/docker/homeassistant</code>，可以按自己喜好修改。</p>
+<p><strong>修改</strong>：<code>/PATH_TO_YOUR_CONFIG</code>。</p>
+<p>若用群晖，则在<code>存储空间设置</code>，这里我自定的目录为 <code>/docker/homeassistant</code>，可以按自己喜好修改。</p>
 <p><img src="https://ritsurin-1309788983.cos.ap-guangzhou.myqcloud.com/img/20250222014208.png" alt="CleanShot 2025-02-22 at 01.42.04@2x"></p>
 </li>
 <li><p>访问 <code>&#123;&#123;部署机 IP&#125;&#125;:8123</code>，左下角可更改语言进行配置</p>
@@ -272,7 +272,7 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-              2025-02-22 01:42:41
+              2025-02-22 01:43:01
             </span>
             
                   <span class="post-categories">
