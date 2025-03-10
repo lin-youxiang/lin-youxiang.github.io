@@ -13,7 +13,7 @@
   
   <title>
     
-      Homebrew MySQL 
+      QK 80 使用说明 
       
       
       |
@@ -153,11 +153,11 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">Homebrew MySQL</div>
+      <div class="post-title">QK 80 使用说明</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-          2024-03-12 19:03:37
+          2025-03-10 11:17:07
         </span>
         
               <span class="post-categories">
@@ -173,40 +173,53 @@
           
       </div>
       <div class="markdown-body">
-        <ul>
-<li><p>to connet run</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>If you need to have <a href="mailto:&#x6d;&#x79;&#x73;&#113;&#x6c;&#64;&#53;&#x2e;&#x37;">mysql@5.7</a> first in your PATH, run:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;export PATH=&quot;/opt/homebrew/opt/mysql@5.7/bin:$PATH&quot;&#x27; &gt;&gt; ~/.zshrc</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>For compilers to find <a href="mailto:&#x6d;&#x79;&#x73;&#113;&#x6c;&#x40;&#x35;&#46;&#55;">mysql@5.7</a> you may need to set:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LDFLAGS=&quot;-L/opt/homebrew/opt/mysql@5.7/lib&quot;</span><br></pre></td></tr></table></figure>
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: QK 80 使用说明</span><br><span class="line">categories:</span><br><span class="line">  - 记录</span><br><span class="line">date: 2025-03-10 11:14:57</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export CPPFLAGS=&quot;-I/opt/homebrew/opt/mysql@5.7/include&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="初始设置"><a href="#初始设置" class="headerlink" title="初始设置"></a>初始设置</h2><ul>
+<li>完整组装前：先安装 FN、TAB 和 Q&#x2F;W&#x2F;E&#x2F;R 开关</li>
+<li>测试蓝牙和 2.4G 连接功能</li>
+<li>确认所有按键正常触发（右 Ctrl 作为 FN 键使用）</li>
+<li>PCB 在所有模式下支持全键无冲，1000Hz 回报率</li>
+</ul>
+<h2 id="指示灯"><a href="#指示灯" class="headerlink" title="指示灯"></a>指示灯</h2><ul>
+<li>ESC: 有线模式与电池电量指示灯（电量低于 5% 时闪烁）</li>
+<li>1, 2, 3: 三个不同的蓝牙连接</li>
+<li>4: 2.4G 无线连接</li>
+<li>切换模式时，对应指示灯闪烁 3 次</li>
+</ul>
+<h2 id="连接模式与切换"><a href="#连接模式与切换" class="headerlink" title="连接模式与切换"></a>连接模式与切换</h2><ol>
+<li><strong>有线模式</strong>：按 FN+TAB 激活有线模式，然后连接线缆</li>
+<li>蓝牙模式：<ul>
+<li>按 FN+TAB 切换到蓝牙模式</li>
+<li>长按 FN+Q&#x2F;W&#x2F;E 五秒进入相应设备槽位的配对模式</li>
+<li>在设备蓝牙设置中查找 “QK80KB”</li>
+<li>使用 FN+Q&#x2F;W&#x2F;E 在已配对设备间切换</li>
+<li>重置连接：长按 FN+Q 五秒（指示灯 1 会闪烁）</li>
+</ul>
 </li>
-<li><p>后台启动 MySQL</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew services start mysql</span><br></pre></td></tr></table></figure>
-
-<p>前台启动 mysql (关闭控制台，服务停止)</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql.server start</span><br></pre></td></tr></table></figure>
-
-<p>To restart <a href="mailto:&#109;&#121;&#115;&#113;&#x6c;&#x40;&#x35;&#46;&#x37;">mysql@5.7</a> after an upgrade:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew services restart mysql@5.7</span><br></pre></td></tr></table></figure>
+<li>2.4G 模式：<ul>
+<li>按 FN+TAB 切换到 2.4G 模式</li>
+<li>长按 FN+R 进入配对模式</li>
+<li>指示灯闪烁后插入 2.4G 接收器</li>
+<li>注意：务必先切换到 2.4G 模式再连接接收器</li>
+</ul>
 </li>
-<li><p>if you don’t want&#x2F;need a background service you can just run:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/opt/homebrew/opt/mysql@5.7/bin/mysqld_safe --datadir=/opt/homebrew/var/mysql</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/opt/homebrew/opt/mysql/bin/mysqld_safe --datadir=/opt/homebrew/var/mysql</span><br></pre></td></tr></table></figure>
+</ol>
+<h2 id="电源管理"><a href="#电源管理" class="headerlink" title="电源管理"></a>电源管理</h2><ul>
+<li>无线模式下一小时无活动后自动进入休眠模式</li>
+<li>按任意键唤醒（即时响应无丢键）</li>
+<li>无线模式下 RGB 灯 30 秒后熄灭</li>
+<li>查看电池电量：FN+F13（通过 RGB 灯条显示电量）<ul>
+<li>80% 以上：全灯条，绿色</li>
+<li>80-50%：3&#x2F;4 灯条，绿色</li>
+<li>50-20%：1&#x2F;2 灯条，黄色</li>
+<li>20-1%：1&#x2F;4 灯条，红色</li>
+</ul>
 </li>
-<li><p>连接 MySQL</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看 MySQL 的端口号</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">show</span> <span class="keyword">global</span> variables <span class="keyword">like</span> <span class="string">&#x27;port&#x27;</span>;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>检查MySQL是否正在运行</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql.server status</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="RGB-灯光控制"><a href="#RGB-灯光控制" class="headerlink" title="RGB 灯光控制"></a>RGB 灯光控制</h2><ul>
+<li>FN+Scroll Lock：切换灯光效果</li>
+<li>FN+Pause Break：更改颜色</li>
 </ul>
 
       </div>
@@ -214,7 +227,7 @@
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2022/06/26/8-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2%E6%95%B4%E6%95%B0-atoi/" target="_self">
+              <a href="/2025/02/19/Home-Assistant-%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E5%B0%8F%E7%B1%B3/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>上一页</span>
               </a>
@@ -223,7 +236,7 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-              2024-03-12 19:03:37
+              2025-03-10 11:17:07
             </span>
             
                   <span class="post-categories">
@@ -240,16 +253,28 @@
           </div>
           <div class="post-foot-prev">
             
-              <a href="/2022/06/28/%E5%88%B7%E9%A2%98-md/" target="_self">
-                <span>下一页</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
-            
           </div>
         </div>
       
     </div>
     
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E8%AE%BE%E7%BD%AE"><span class="toc-text">初始设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E7%A4%BA%E7%81%AF"><span class="toc-text">指示灯</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%88%87%E6%8D%A2"><span class="toc-text">连接模式与切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E6%BA%90%E7%AE%A1%E7%90%86"><span class="toc-text">电源管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RGB-%E7%81%AF%E5%85%89%E6%8E%A7%E5%88%B6"><span class="toc-text">RGB 灯光控制</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
 
     
       <div class="comments-container">
@@ -528,12 +553,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Homebrew%20MySQL + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F06%2F28%2FHomebrew-MySQL%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + QK%2080%20%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E + '&url=' + http%3A%2F%2Fexample.com%2F2025%2F03%2F10%2FQK-80-%25E4%25BD%25BF%25E7%2594%25A8%25E8%25AF%25B4%25E6%2598%258E%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/06/28/Homebrew-MySQL/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2025/03/10/QK-80-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
