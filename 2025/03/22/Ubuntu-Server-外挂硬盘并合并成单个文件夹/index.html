@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Pingu" />
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  
+  
+  <title>
+    
+      Ubuntu Server 外挂硬盘并合并成单个文件夹 
+      
+      
+      |
+    
+     Campsite
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/IMG_0238.JPG" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Pingu</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Ubuntu Server 外挂硬盘并合并成单个文件夹</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-03-22 01:36:25
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/Home/" title="Home">
+                    <b>#</b> Home
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="在-Ubuntu-Server-中将两个-USB-外接硬盘合并挂载到-Docker-容器内"><a href="#在-Ubuntu-Server-中将两个-USB-外接硬盘合并挂载到-Docker-容器内" class="headerlink" title="在 Ubuntu Server 中将两个 USB 外接硬盘合并挂载到 Docker 容器内"></a>在 Ubuntu Server 中将两个 USB 外接硬盘合并挂载到 Docker 容器内</h1><p>今天，我在一台 Ubuntu Server 上插入了两个 USB 外接硬盘，想要将它们合并成一个大约 2TB 的存储空间，供 Docker 容器使用。这里记录下详细的步骤，以便以后参考，也方便有类似需求的小伙伴。</p>
+<hr>
+<h2 id="🛠️-环境与需求描述："><a href="#🛠️-环境与需求描述：" class="headerlink" title="🛠️ 环境与需求描述："></a>🛠️ 环境与需求描述：</h2><ul>
+<li>系统：Ubuntu Server 22.04 LTS</li>
+<li>USB 外接硬盘：2 块，每块容量 1TB</li>
+<li>需求：将两块硬盘合并成一个逻辑存储空间，挂载到 Docker 容器的目录中，容器看到的是一个整体约 2TB 的空间。</li>
+</ul>
+<hr>
+<h2 id="📌-步骤一：查看并确认硬盘信息"><a href="#📌-步骤一：查看并确认硬盘信息" class="headerlink" title="📌 步骤一：查看并确认硬盘信息"></a>📌 步骤一：查看并确认硬盘信息</h2><p>插入硬盘后，先确认磁盘被正确识别：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sdb           8:16   0 931.5G  0 disk </span><br><span class="line">├─sdb1        8:17   0 200M    0 part </span><br><span class="line">├─sdb2        8:18   0 931.2G  0 part </span><br><span class="line">└─sdb3        8:19   0 128M    0 part </span><br><span class="line">sdc           8:32   0 931.5G  0 disk </span><br><span class="line">├─sdc1        8:33   0 200M    0 part </span><br><span class="line">├─sdc2        8:34   0 931.2G  0 part </span><br><span class="line">└─sdc3        8:35   0 128M    0 part</span><br></pre></td></tr></table></figure>
+
+<p>可以看到两块磁盘分别为 <code>/dev/sdb</code> 和 <code>/dev/sdc</code>。</p>
+<hr>
+<h2 id="📌-步骤二：重新分区并格式化硬盘（GPT-EXT4）"><a href="#📌-步骤二：重新分区并格式化硬盘（GPT-EXT4）" class="headerlink" title="📌 步骤二：重新分区并格式化硬盘（GPT + EXT4）"></a>📌 步骤二：重新分区并格式化硬盘（GPT + EXT4）</h2><p>我决定重新分区并格式化为 Ubuntu 常用的 EXT4 文件系统：</p>
+<p>分别执行下面命令（以 <code>/dev/sdb</code> 为例）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo fdisk /dev/sdb</span><br></pre></td></tr></table></figure>
+
+<p>交互操作：</p>
+<ul>
+<li>输入 <code>g</code> 创建新 GPT 分区表。</li>
+<li>输入 <code>n</code> 创建新分区，默认一路回车。</li>
+<li>输入 <code>w</code> 保存退出。</li>
+</ul>
+<p>再执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkfs.ext4 /dev/sdb1</span><br></pre></td></tr></table></figure>
+
+<p>对 <code>/dev/sdc</code> 重复上述操作。</p>
+<p>现在，两块硬盘分别只有一个分区：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sdb           8:16   0 931.5G  0 disk </span><br><span class="line">└─sdb1        8:17   0 931.5G  0 part </span><br><span class="line">sdc           8:32   0 931.5G  0 disk </span><br><span class="line">└─sdc1        8:33   0 931.5G  0 part</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="📌-步骤三：挂载磁盘到系统"><a href="#📌-步骤三：挂载磁盘到系统" class="headerlink" title="📌 步骤三：挂载磁盘到系统"></a>📌 步骤三：挂载磁盘到系统</h2><p>创建挂载目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">mkdir</span> -p /mnt/disk1</span><br><span class="line">sudo <span class="built_in">mkdir</span> -p /mnt/disk2</span><br></pre></td></tr></table></figure>
+
+<p>挂载磁盘：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mount /dev/sdb1 /mnt/disk1</span><br><span class="line">sudo mount /dev/sdc1 /mnt/disk2</span><br></pre></td></tr></table></figure>
+
+<p>修改权限，便于普通用户访问：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">chown</span> <span class="variable">$USER</span>:<span class="variable">$USER</span> /mnt/disk1 /mnt/disk2</span><br></pre></td></tr></table></figure>
+
+<p>配置开机自动挂载，编辑 <code>/etc/fstab</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo blkid</span><br></pre></td></tr></table></figure>
+
+<p>记录两个磁盘的 UUID，修改 <code>/etc/fstab</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UUID=磁盘1的UUID /mnt/disk1 ext4 defaults 0 2</span><br><span class="line">UUID=磁盘2的UUID /mnt/disk2 ext4 defaults 0 2</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="📌-步骤四：使用-mergerfs-合并磁盘空间（核心步骤）"><a href="#📌-步骤四：使用-mergerfs-合并磁盘空间（核心步骤）" class="headerlink" title="📌 步骤四：使用 mergerfs 合并磁盘空间（核心步骤）"></a>📌 步骤四：使用 mergerfs 合并磁盘空间（核心步骤）</h2><p>为了让两个独立的磁盘目录看起来像一个大容量磁盘，我采用了 <strong>mergerfs</strong> 工具。</p>
+<p>安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install mergerfs -y</span><br></pre></td></tr></table></figure>
+
+<p>创建合并后的目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">mkdir</span> /mnt/merged</span><br></pre></td></tr></table></figure>
+
+<p>然后使用 mergerfs 合并：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mergerfs /mnt/disk1:/mnt/disk2 /mnt/merged -o allow_other,use_ino,cache.files=off,moveonenospc=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>此时可能出现提示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fuse: mountpoint is not empty</span><br></pre></td></tr></table></figure>
+
+<p>解决方法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">rm</span> -rf /mnt/merged/*</span><br><span class="line">sudo <span class="built_in">rm</span> -rf /mnt/merged/.* 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<p>或者在 <code>/etc/fstab</code> 中使用 <code>nonempty</code> 选项。</p>
+<p>配置开机自动挂载 mergerfs，编辑 <code>/etc/fstab</code>，添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mnt/disk1:/mnt/disk2 /mnt/merged fuse.mergerfs allow_other,use_ino,cache.files=off,moveonenospc=true 0 0</span><br></pre></td></tr></table></figure>
+
+<p>生效配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mount -a</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="📌-步骤五：Docker-容器挂载-merged-目录"><a href="#📌-步骤五：Docker-容器挂载-merged-目录" class="headerlink" title="📌 步骤五：Docker 容器挂载 merged 目录"></a>📌 步骤五：Docker 容器挂载 merged 目录</h2><p>现在 Docker 就能以挂载卷的方式使用这个合并后的大磁盘：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  -v /mnt/merged:/data \</span><br><span class="line">  your_image_name</span><br></pre></td></tr></table></figure>
+
+<p>容器内部看到的磁盘空间将是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Filesystem                 Size  Used Avail Use% Mounted on</span><br><span class="line">disk1:disk2                1.9T   56K  1.8T   1% /data</span><br></pre></td></tr></table></figure>
+
+<p>容器对 <code>/data</code> 的访问就像访问单个大容量磁盘一样，非常方便。</p>
+<hr>
+<h2 id="📌-额外说明：USB-硬盘盒自动睡眠的问题"><a href="#📌-额外说明：USB-硬盘盒自动睡眠的问题" class="headerlink" title="📌 额外说明：USB 硬盘盒自动睡眠的问题"></a>📌 额外说明：USB 硬盘盒自动睡眠的问题</h2><p>USB 硬盘盒一般会在一定时间（比如10分钟）没有读写后自动进入睡眠状态：</p>
+<ul>
+<li><strong>优点</strong>：降低功耗、减少机械磨损。</li>
+<li><strong>缺点</strong>：首次访问硬盘有轻微延迟（几秒钟），频繁唤醒可能降低硬盘寿命。</li>
+</ul>
+<p>大部分情况下不用担心。如需检查硬盘启动次数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install smartmontools</span><br><span class="line">sudo smartctl -a /dev/sdb | grep <span class="string">&#x27;Start_Stop_Count&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>每天几十次内启停属于正常范围，正常使用不会有影响。</p>
+<hr>
+<h2 id="🚀-总结与感想"><a href="#🚀-总结与感想" class="headerlink" title="🚀 总结与感想"></a>🚀 总结与感想</h2><p>本次实践：</p>
+<ul>
+<li>使用 GPT + EXT4 格式化磁盘；</li>
+<li>使用 mergerfs 工具灵活合并磁盘；</li>
+<li>Docker 容器无感知挂载大容量存储空间。</li>
+</ul>
+<p>整体操作安全简单，对硬盘数据不破坏，日后也可以随时灵活拆分。</p>
+<p>希望这篇文章能帮助到有类似需求的朋友～</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2025/03/20/%E4%BA%8C%E5%8F%89%E6%A0%91/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2025-03-22 01:36:25
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="分类"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/Home/" title="Home">
+                        <b>#</b> Home
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%A8-Ubuntu-Server-%E4%B8%AD%E5%B0%86%E4%B8%A4%E4%B8%AA-USB-%E5%A4%96%E6%8E%A5%E7%A1%AC%E7%9B%98%E5%90%88%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%88%B0-Docker-%E5%AE%B9%E5%99%A8%E5%86%85"><span class="toc-text">在 Ubuntu Server 中将两个 USB 外接硬盘合并挂载到 Docker 容器内</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%9B%A0%EF%B8%8F-%E7%8E%AF%E5%A2%83%E4%B8%8E%E9%9C%80%E6%B1%82%E6%8F%8F%E8%BF%B0%EF%BC%9A"><span class="toc-text">🛠️ 环境与需求描述：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-%E6%AD%A5%E9%AA%A4%E4%B8%80%EF%BC%9A%E6%9F%A5%E7%9C%8B%E5%B9%B6%E7%A1%AE%E8%AE%A4%E7%A1%AC%E7%9B%98%E4%BF%A1%E6%81%AF"><span class="toc-text">📌 步骤一：查看并确认硬盘信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-%E6%AD%A5%E9%AA%A4%E4%BA%8C%EF%BC%9A%E9%87%8D%E6%96%B0%E5%88%86%E5%8C%BA%E5%B9%B6%E6%A0%BC%E5%BC%8F%E5%8C%96%E7%A1%AC%E7%9B%98%EF%BC%88GPT-EXT4%EF%BC%89"><span class="toc-text">📌 步骤二：重新分区并格式化硬盘（GPT + EXT4）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-%E6%AD%A5%E9%AA%A4%E4%B8%89%EF%BC%9A%E6%8C%82%E8%BD%BD%E7%A3%81%E7%9B%98%E5%88%B0%E7%B3%BB%E7%BB%9F"><span class="toc-text">📌 步骤三：挂载磁盘到系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-%E6%AD%A5%E9%AA%A4%E5%9B%9B%EF%BC%9A%E4%BD%BF%E7%94%A8-mergerfs-%E5%90%88%E5%B9%B6%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%EF%BC%88%E6%A0%B8%E5%BF%83%E6%AD%A5%E9%AA%A4%EF%BC%89"><span class="toc-text">📌 步骤四：使用 mergerfs 合并磁盘空间（核心步骤）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-%E6%AD%A5%E9%AA%A4%E4%BA%94%EF%BC%9ADocker-%E5%AE%B9%E5%99%A8%E6%8C%82%E8%BD%BD-merged-%E7%9B%AE%E5%BD%95"><span class="toc-text">📌 步骤五：Docker 容器挂载 merged 目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-%E9%A2%9D%E5%A4%96%E8%AF%B4%E6%98%8E%EF%BC%9AUSB-%E7%A1%AC%E7%9B%98%E7%9B%92%E8%87%AA%E5%8A%A8%E7%9D%A1%E7%9C%A0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">📌 额外说明：USB 硬盘盒自动睡眠的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%9A%80-%E6%80%BB%E7%BB%93%E4%B8%8E%E6%84%9F%E6%83%B3"><span class="toc-text">🚀 总结与感想</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2025 Oranges</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Ubuntu%20Server%20%E5%A4%96%E6%8C%82%E7%A1%AC%E7%9B%98%E5%B9%B6%E5%90%88%E5%B9%B6%E6%88%90%E5%8D%95%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%B9 + '&url=' + http%3A%2F%2Fexample.com%2F2025%2F03%2F22%2FUbuntu-Server-%25E5%25A4%2596%25E6%258C%2582%25E7%25A1%25AC%25E7%259B%2598%25E5%25B9%25B6%25E5%2590%2588%25E5%25B9%25B6%25E6%2588%2590%25E5%258D%2595%25E4%25B8%25AA%25E6%2596%2587%25E4%25BB%25B6%25E5%25A4%25B9%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2025/03/22/Ubuntu-Server-%E5%A4%96%E6%8C%82%E7%A1%AC%E7%9B%98%E5%B9%B6%E5%90%88%E5%B9%B6%E6%88%90%E5%8D%95%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%B9/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
